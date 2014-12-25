@@ -1,4 +1,4 @@
-package com.inmobi.cache;
+package com.harish.cache;
 
 public class IndexedEntry<T extends Comparable<T>> implements
 		Comparable<IndexedEntry<T>> {
