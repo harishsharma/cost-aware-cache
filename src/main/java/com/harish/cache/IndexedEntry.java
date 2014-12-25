@@ -1,25 +1,18 @@
 package com.harish.cache;
 
-public class IndexedEntry<T extends Comparable<T>> implements
-		Comparable<IndexedEntry<T>> {
-	T entry;
+import com.harish.cache.CostAwareCache.Entry;
+
+@SuppressWarnings("rawtypes")
+public class IndexedEntry implements Comparable<IndexedEntry> {
+	final Entry entry;
 	int index;
 
-	public IndexedEntry() {
-		this(null, 0);
-	}
-
-	public IndexedEntry(T entry, int index) {
+	public IndexedEntry(Entry entry) {
 		this.entry = entry;
-		this.index = index;
 	}
 
-	T getEntry() {
+	Entry getEntry() {
 		return entry;
-	}
-
-	void setEntry(T entry) {
-		this.entry = entry;
 	}
 
 	int getIndex() {
@@ -30,8 +23,15 @@ public class IndexedEntry<T extends Comparable<T>> implements
 		this.index = index;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public int compareTo(IndexedEntry<T> o) {
+	public int compareTo(IndexedEntry o) {
 		return entry.compareTo(o.entry);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Entry with cost %d is at index %d", entry.h,
+				index);
 	}
 }
