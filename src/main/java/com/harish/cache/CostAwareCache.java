@@ -2,21 +2,22 @@ package com.harish.cache;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class CostAwareCache<K, V> {
 
 	private static final int MAXIMUM_CAPACITY = 1 << 30;
 
-	private final PriorityQueue<Entry<K, V>> queue;
-	private final Map<K, EntryIndexHolder<K, V>> map;
+	private final IndexAwareHeap<K, V> heap;
+	private final Map<K, IndexedEntry<K, V>> map;
 
 	private int everIncreasingLValue = 0;
 
 	/**
 	 * The number of key-value mappings contained in this map.
 	 */
-	transient int size;
+	private transient int size;
+
+	private final int capacity;
 
 	public CostAwareCache(int capacity) {
 		if (capacity < 1)
@@ -24,8 +25,9 @@ public class CostAwareCache<K, V> {
 		if (capacity > MAXIMUM_CAPACITY)
 			capacity = MAXIMUM_CAPACITY;
 
-		queue = new PriorityQueue<CostAwareCache.Entry<K, V>>(capacity);
-		map = new HashMap<K, EntryIndexHolder<K, V>>(capacity);
+		this.capacity = capacity;
+		heap = new IndexAwareHeap<K, V>(capacity);
+		map = new HashMap<K, IndexedEntry<K, V>>(capacity);
 	}
 
 	public int size() {
@@ -39,61 +41,68 @@ public class CostAwareCache<K, V> {
 	public V get(K key) {
 		if (null == key)
 			return null;
-		EntryIndexHolder<K, V> holder = map.get(key);
+		IndexedEntry<K, V> holder = map.get(key);
 		if (null == holder || null == holder.entry)
 			return null;
+
 		V value = holder.entry.value;
-		// int indexInHeap = holder.index;
-		// recalculate h value for entry.
-		// reOrderPriority(int index)
+		holder.entry.h = calculateHValue(holder.entry.cost);
+		heap.increaseValue(holder.index, holder.entry.h);
 		return value;
 	}
 
-	public V put(K key, V value, int costOfValue) {
+	public void put(K key, V value, int costOfValue) {
 		if (null == key)
 			throw new NullPointerException("Null keys are not supported");
-		if (costOfValue < 1)
-			throw new IllegalArgumentException("Minimum cost allowed is one.");
+		if (costOfValue <= 0)
+			throw new IllegalArgumentException("Less than minimum cost allowed");
 
 		if (map.containsKey(key)) {
-			Entry<K, V> entry = new Entry<>(key, value, costOfValue,
-					calculateHValue(costOfValue));
-			// replace(Entry<K, V> new , Entry<K, V> old);
+			IndexedEntry<K, V> holder = map.get(key);
+			holder.entry.value = value;
+			holder.entry.cost = costOfValue;
+			int oldH = holder.entry.h;
+			int newH = calculateHValue(costOfValue);
+			holder.entry.h = newH;
+			if (oldH < newH)
+				heap.increaseValue(holder.index, newH);
+			else
+				heap.decreaseValue(holder.index, newH);
+			return;
 		}
 
-		int h = 0;
-		// calculate h value here.
-		//
-		return null;
+		if (size >= capacity) {
+			IndexedEntry<K, V> holder = heap.remove();
+			map.remove(holder.entry.key);
+			size = heap.size;
+		}
+
+		int hValue = calculateHValue(costOfValue);
+		IndexedEntry<K, V> holder = new IndexedEntry<>(new Entry<K, V>(key,
+				value, costOfValue, hValue));
+		map.put(key, holder);
+		heap.add(holder);
+		size = heap.size;
 	}
 
 	private int calculateHValue(int cost) {
-		return everIncreasingLValue + cost;
-	}
-
-	static class EntryIndexHolder<K, V> {
-		final Entry<K, V> entry;
-		int index;
-
-		public EntryIndexHolder(final Entry<K, V> entry, int index) {
-			this.entry = entry;
-			this.index = index;
+		int result = everIncreasingLValue + cost;
+		IndexedEntry<K, V> holder = heap.peek();
+		if (holder == null || holder.entry == null) {
+			// should not happen more than once.
+			everIncreasingLValue = result;
+		} else {
+			everIncreasingLValue = holder.entry.h;
 		}
 
-		Entry<K, V> getEntry() {
-			return entry;
-		}
-
-		int getIndex() {
-			return index;
-		}
+		return result;
 	}
 
 	static class Entry<K, V> implements Comparable<Entry<K, V>> {
 		// benefit value associated with this entry. Key with minimum h value is
 		// removed during the purging.
 		int h;
-		final int cost;
+		int cost;
 		final K key;
 		V value;
 
@@ -120,6 +129,10 @@ public class CostAwareCache<K, V> {
 
 		int getCost() {
 			return cost;
+		}
+
+		void setCost(int cost) {
+			this.cost = cost;
 		}
 
 		int getH() {

@@ -2,18 +2,19 @@ package com.harish.cache;
 
 import java.util.Arrays;
 
-public class IndexAwareHeap {
+public class IndexAwareHeap<K, V> {
 
 	static final int INITIAL_CAPACITY = 1 << 4;
 	static final int MAXIMUM_CAPACITY = 1 << 30;
 
-	IndexedEntry[] array;
+	IndexedEntry<K, V>[] array;
 	int size;
 
 	public IndexAwareHeap() {
 		this(INITIAL_CAPACITY);
 	}
 
+	@SuppressWarnings("unchecked")
 	public IndexAwareHeap(int capacity) {
 		if (capacity < 0)
 			throw new IllegalArgumentException("Illegal capacity: " + capacity);
@@ -23,7 +24,7 @@ public class IndexAwareHeap {
 		size = 0;
 	}
 
-	public void add(IndexedEntry value) {
+	public void add(IndexedEntry<K, V> value) {
 		if (size >= array.length - 1) {
 			array = resize();
 		}
@@ -47,7 +48,7 @@ public class IndexAwareHeap {
 	/**
 	 * Returns (but does not remove) the minimum element in the heap.
 	 */
-	public IndexedEntry peek() {
+	public IndexedEntry<K, V> peek() {
 		if (isEmpty()) {
 			return null;
 		}
@@ -58,8 +59,8 @@ public class IndexAwareHeap {
 	/**
 	 * Removes and returns the minimum element in the heap.
 	 */
-	public IndexedEntry remove() {
-		IndexedEntry result = peek();
+	public IndexedEntry<K, V> remove() {
+		IndexedEntry<K, V> result = peek();
 
 		// get rid of the last leaf/decrement
 		array[1] = array[size];
@@ -72,6 +73,20 @@ public class IndexAwareHeap {
 		return result;
 	}
 
+	public void increaseValue(int index, int value) {
+		if (array[index].entry.h > value)
+			throw new IllegalArgumentException("Cannot decrease value");
+		array[index].entry.h = value;
+		shiftDownFromIndex(index);
+	}
+
+	public void decreaseValue(int index, int value) {
+		if (array[index].entry.h < value)
+			throw new IllegalArgumentException("Cannot increase priority");
+		array[index].entry.h = value;
+		shiftUpFromIndex(index);
+	}
+
 	/**
 	 * Returns a string representation of heap with values stored with heap
 	 * structure and order properties.
@@ -81,8 +96,7 @@ public class IndexAwareHeap {
 		return Arrays.toString(array);
 	}
 
-	void shiftDown() {
-		int index = 1;
+	void shiftDownFromIndex(int index) {
 
 		while (hasLeftChild(index)) {
 			int smallerChild = leftIndex(index);
@@ -102,13 +116,21 @@ public class IndexAwareHeap {
 		}
 	}
 
-	void shiftUp() {
-		int index = this.size;
+	void shiftDown() {
+		int index = 1;
+		shiftDownFromIndex(index);
+	}
 
+	void shiftUpFromIndex(int index) {
 		while (hasParent(index) && (parent(index).compareTo(array[index]) > 0)) {
 			swap(index, parentIndex(index));
 			index = parentIndex(index);
 		}
+	}
+
+	void shiftUp() {
+		int index = this.size;
+		shiftUpFromIndex(index);
 	}
 
 	boolean hasParent(int i) {
@@ -131,7 +153,7 @@ public class IndexAwareHeap {
 		return rightIndex(i) <= size;
 	}
 
-	IndexedEntry parent(int i) {
+	IndexedEntry<K, V> parent(int i) {
 		return array[parentIndex(i)];
 	}
 
@@ -139,12 +161,12 @@ public class IndexAwareHeap {
 		return i / 2;
 	}
 
-	IndexedEntry[] resize() {
+	IndexedEntry<K, V>[] resize() {
 		return Arrays.copyOf(array, array.length * 2);
 	}
 
 	void swap(int index1, int index2) {
-		IndexedEntry tmp = array[index1];
+		IndexedEntry<K, V> tmp = array[index1];
 		array[index1] = array[index2];
 		array[index2] = tmp;
 		array[index1].index = index1;
