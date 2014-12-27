@@ -98,6 +98,14 @@ public class CostAwareCache<K, V> {
 		return result;
 	}
 
+	/**
+	 * TODO: Write proper toString.
+	 */
+	@Override
+	public String toString() {
+		return heap.toString();
+	}
+
 	static class Entry<K, V> implements Comparable<Entry<K, V>> {
 		// benefit value associated with this entry. Key with minimum h value is
 		// removed during the purging.
