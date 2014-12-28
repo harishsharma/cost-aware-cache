@@ -39,6 +39,24 @@ I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to co
   else
    	hits++
 ```
+* Also to simulate LRU friendly behavior 40% of the keys are referenced 60% of the time and rest of the keys are referenced 40% of the time.
+
+Results
+-------
+Iterations:100,000
+|Cache | Hits | Hit Ratio | Time in Seconds | Time Taken Compared to Google Cache
+|------|------|-----------|-----------------| -----------------------------------
+|Google Cache | 57152 | 57.1% | 1107 | 100 % 
+|LRU Cache | 57063 | 57% | 1112 | 100.4%
+|Cost Aware Cache | 55285 | 55.2% | 985 | 88.9%
+
+Iterations:1000,000
+|Cache | Hits | Hit Ratio | Time in Seconds | Time Taken Compared to Google Cache
+|------|------|-----------|-----------------| -----------------------------------
+|Google Cache | 649567 | 64.9% | 9015 | 100%
+|LRU Cache | 649197 | 64.9% | 9082 | 100.7%
+|Cost Aware Cache | 637117 | 63.7% | 6264 | 69.4%
+
 
 
 			
