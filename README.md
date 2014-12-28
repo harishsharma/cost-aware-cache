@@ -44,6 +44,7 @@ I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to co
 Results
 -------
 Iterations:100,000
+
 |Cache | Hits | Hit Ratio | Time in Seconds | Time Taken Compared to Google Cache
 |------|------|-----------|-----------------| -----------------------------------
 |Google Cache | 57152 | 57.1% | 1107 | 100 % 
@@ -51,6 +52,7 @@ Iterations:100,000
 |Cost Aware Cache | 55285 | 55.2% | 985 | 88.9%
 
 Iterations:1000,000
+
 |Cache | Hits | Hit Ratio | Time in Seconds | Time Taken Compared to Google Cache
 |------|------|-----------|-----------------| -----------------------------------
 |Google Cache | 649567 | 64.9% | 9015 | 100%
