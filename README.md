@@ -19,7 +19,7 @@ Usage:
 CostAwareCache<K, V> costAwareCache = new CostAwareCache<>(
 			CACHE_CAPACITY);
 costAwareCache.put(K, V, cost);
-costAwareCache.get(V) 
+costAwareCache.get(K) 
 ```			
 			
 
@@ -61,6 +61,9 @@ Iterations:1000,000
 |LRU Cache | 649197 | 64.9% | 9082 | 100.7%
 |Cost Aware Cache | 637117 | 63.7% | 6264 | 69.4%
 
-
+TODO
+----
+Make it thread safe.
+Do optimizations based on paper (http://dblab.usc.edu/Users/papers/CAMPTR.pdf)
 
 			
