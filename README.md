@@ -21,11 +21,11 @@ Use:
 
 BenchMark: I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to compare with CostAwareCache implementation.
 <P>
-	* I have taken 50,000 unique keys to make the key set universe.
-	* Each cache has capacity to hold maximum 30,000 KV pairs after which eviction happens.(Note: when eviction happens depends on cache implementation)
-	* Each key has been assigned a value randomly between 1 to 50  , which also is the cost of computing the corresponding value in Milliseconds. e.g. If key has value of 15 then cost of computing that value is 15 Ms.
-	* Computing Cost is simulated by sleeping the thread for cost millisecond. e.g. if cost was 15 Ms then Thead.sleep(15) is called.
-	* I ran all the three caches in 
+	- I have taken 50,000 unique keys to make the key set universe.
+	- Each cache has capacity to hold maximum 30,000 KV pairs after which eviction happens.(Note: when eviction happens depends on cache implementation)
+	- Each key has been assigned a value randomly between 1 to 50  , which also is the cost of computing the corresponding value in Milliseconds. e.g. If key has value of 15 then cost of computing that value is 15 Ms.
+	- Computing Cost is simulated by sleeping the thread for cost millisecond. e.g. if cost was 15 Ms then Thead.sleep(15) is called.
+	- I ran all the three caches in 
 	
 
 
