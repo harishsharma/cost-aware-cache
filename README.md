@@ -61,6 +61,12 @@ Iterations:1000,000
 |LRU Cache | 649197 | 64.9% | 9082 | 100.7%
 |Cost Aware Cache | 637117 | 63.7% | 6264 | 69.4%
 
+Findings
+--------
+
+* Hit rate of Cost Aware Cache is slightly less then LRU Based Cache , but still very close.
+* Even with less hit rate , over all latency across multiple iterations (100,000 and 1000,000) for Cost aware cache is significantly less then LRU cache , which is justifiable because cost aware cache tries to keep KV pairs with higher cost in cache , which simple LRU cache does not take into account.
+
 TODO
 ----
 
