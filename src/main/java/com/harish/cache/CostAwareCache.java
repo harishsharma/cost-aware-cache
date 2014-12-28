@@ -11,7 +11,8 @@ import java.util.Map;
  * It combines LRU with cost of computing values to give a more novel eviction
  * policy.
  * <p>
- * {@link CostAwareCache} is an implementation of Greedy dual size algorithm.
+ * {@link CostAwareCache} uses Greedy dual size algorithm to calculate the
+ * effective cost for each key.
  * <p>
  * <i>Note: This implementation is thread unsafe and not optimized fully and
  * just a draft implementation<i>

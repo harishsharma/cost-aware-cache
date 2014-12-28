@@ -4,6 +4,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+//TODO: ADD test cases to validate the cache operations and effective cost of keys.
 public class CostAwareCacheTest {
 	private CostAwareCache<String, String> classUnderTest;
 
