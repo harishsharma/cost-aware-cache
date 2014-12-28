@@ -11,12 +11,15 @@ public class Helper {
 	 * Creates string keys with mapping to cost associated with them.
 	 * <p>
 	 * Note: key length will be fixed to 20 chars and cost value will be between
-	 * 1ms and 50ms , randomly assigned to each key.
+	 * 1 and 50 , randomly assigned to each key.
+	 * <p>
+	 * Note : Value will be used to derive the cost of computing the value for
+	 * all Benchmarks. Currently cost for key = 10 * value.
 	 * 
 	 * @param n
 	 * @return
 	 */
-	public static Map<String, Integer> createKeysWithCostInMs(final int n) {
+	public static Map<String, Integer> createKeysWithValues(final int n) {
 		Random random = new Random();
 		Map<String, Integer> result = new HashMap<>(n);
 
