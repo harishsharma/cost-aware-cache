@@ -14,11 +14,13 @@ Reference : http://www.cse.iitb.ac.in/~gracias/webcaching/html/node31.html
 <p>
 
 Usage:
-------	
-			CostAwareCache<String, Integer> costAwareCache = new CostAwareCache<>(
+------
+```java
+CostAwareCache<K, V> costAwareCache = new CostAwareCache<>(
 			CACHE_CAPACITY);
-			costAwareCache.put(key, value, cost);
-			costAwareCache.get(key) 
+costAwareCache.put(K, V, cost);
+costAwareCache.get(V) 
+```			
 			
 
 BenchMark 
