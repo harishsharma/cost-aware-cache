@@ -63,7 +63,8 @@ Iterations:1000,000
 
 TODO
 ----
-Make it thread safe.
-Do optimizations based on paper (http://dblab.usc.edu/Users/papers/CAMPTR.pdf)
+
+* Make it thread safe.
+* Do optimizations based on paper (http://dblab.usc.edu/Users/papers/CAMPTR.pdf)
 
 			
