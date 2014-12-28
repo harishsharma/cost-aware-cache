@@ -7,7 +7,7 @@ CostAwareCache is a cache implementation which takes cost of computing values in
 <p>
 It combines LRU with cost of computing values to give a more novel eviction policy.
 CostAwareCache uses Greedy dual size algorithm to calculate the effective cost for each key.<p>
-Note: This implementation is thread unsafe and not optimized fully and just a draft implementation
+Note: This implementation is thread unsafe and not optimized fully and just a draft implementation.
 <p>
 Reference : http://www.cse.iitb.ac.in/~gracias/webcaching/html/node31.html
 <p>
@@ -18,7 +18,8 @@ Use:
 			costAwareCache.put(key, value, cost);
 			costAwareCache.get(key) 
 <p>
-BenchMarking:
+
+BenchMark: I have used GoogleCache (from guava) , LRUcache (based on {@link LinkedHashMap}) and CostAware
 
 
 			
