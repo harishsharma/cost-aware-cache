@@ -31,14 +31,14 @@ I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to co
 * Computing Cost is simulated by sleeping the thread for cost millisecond. e.g. if cost was 15 Ms then Thead.sleep(15) is called while put operation.
 * 10,000 keys when pre-populated to warm up all the caches.
 * For specified number of iterations do the following for all the three caches and compare numbers.
-```if cache.get(key) == null
+```java
+ if cache.get(key) == null
 	Get value from KV mapping.
 	Thread.sleep(value)
 	cache.put(value)
-   else
+  else
    	hits++
 ```
-	
 
 
 			
