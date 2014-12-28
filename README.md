@@ -41,7 +41,7 @@ I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to co
   else
    	hits++
 ```
-* Also to simulate LRU friendly behavior 40% of the keys are referenced 60% of the time and rest of the keys are referenced 40% of the time.
+* Also to simulate LRU friendly behavior , 40% of the keys are referenced 60% of the time and rest of the keys are referenced 40% of the time.
 
 Results
 -------
