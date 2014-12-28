@@ -2,6 +2,7 @@ cost-aware-cache
 ================
 
 Cost aware cache implementation.
+--------------------------------
 
 CostAwareCache is a cache implementation which takes cost of computing values into account. This cache can be used when cost of computing key-value is different for different KVs.
 <p>
@@ -11,15 +12,18 @@ Note: This implementation is thread unsafe and not optimized fully and just a dr
 <p>
 Reference : http://www.cse.iitb.ac.in/~gracias/webcaching/html/node31.html
 <p>
-Use:
-			
+
+Usage:
+------	
 			CostAwareCache<String, Integer> costAwareCache = new CostAwareCache<>(
 			CACHE_CAPACITY);
 			costAwareCache.put(key, value, cost);
 			costAwareCache.get(key) 
-<p>
+			
 
-BenchMark: I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to compare with CostAwareCache implementation.
+BenchMark 
+---------
+I have used GoogleCache (from GUAVA) and LRUcache (based on LinkedHashMap) to compare with CostAwareCache implementation.
 
 * I have taken 50,000 unique keys to make the key set universe.
 * Each cache has capacity to hold maximum 30,000 KV pairs after which eviction happens.(Note: when eviction happens depends on cache implementation)
