@@ -73,4 +73,16 @@ TODO
 * Make it thread safe.
 * Do optimizations based on paper (http://dblab.usc.edu/Users/papers/CAMPTR.pdf)
 
+Internal Details of CostAwareCache
+----------------------------------
+CostAwareCache performs both get(key) , put(key,value,cost) operations in O(log(keys)).
+It internally maintains a hashmap of Key - IndexAwareEntry and a binary heap of IndexAwareEntry. IndexAwareEntry is a container to hold Key-Value pair , cost associated with KV pair and the index of this KV pair inside the heap data structure.
+
+Since HashMap allows O(1) get(key) operation(assuming minimal collisions) , we can get IndexAwareEntry associated with the key using hashmap in constant time and using this IndexAwareEntry we can get the index of this Entry inside the binary heap immidiately which allows us to make the random delete operation in heap in O(log(n)) (Note: In normal Heap random delete operation is O(n*log(n)) as first we need to find the item in heap and then delete that.)
+
+Whenever , IndexAwareEntry is moved up or down the heap due to change in priority of that entry , the corresponding index inside the entry is reset accordingly.
+
+Priority of entries are calculated according to Greedy dual size algorithm and called H(key) value for any KV pair. This H(key) include both LRU factor as well as cost factor for KV pair.
+
+
 			
